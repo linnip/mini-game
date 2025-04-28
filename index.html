@@ -1,55 +1,199 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 
 <head>
 	<meta charset="UTF-8">
+	<title>尋機頭遊戲</title>
 
-	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54265270-2"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag() { dataLayer.push(arguments); }
 		gtag('js', new Date());
-
 		gtag('config', 'UA-54265270-2');
 	</script>
-	<!--Import Google Icon Font-->
+
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
-	<!--Import materialize.css-->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-		integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
-	<!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-<style>
-	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
 
-	body {
-		font-family: 'Noto Sans TC', sans-serif;
-	}
-</style>
+	<style>
+		body {
+			font-family: 'Noto Sans TC', sans-serif;
+		}
+
+		#grid {
+			width: 100%;
+			height: auto;
+			max-width: 600px;
+			display: block;
+			margin: 0 auto;
+		}
+
+		.legend {
+			margin:1rem 0;
+			text-align: center;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		.legend-item {
+			display: inline-flex;
+			align-items: center;
+			margin:.5rem;
+			font-size: 20px;
+		}
+
+		.color-box {
+			width: 20px;
+			height: 20px;
+			margin-right: 5px;
+			border: 1px solid #333;
+		}
+
+
+		.color-head {
+			background-color: #c2185b;
+		}
+
+		.color-obstacle {
+			background-color: #1565c0;
+		}
+
+		.color-empty {
+			background-color: #546e7a;
+		}
+
+		.plane-sample {
+			display: grid;
+			grid-template-columns: repeat(5, 24px);
+			grid-gap: 1px;
+			justify-content: center;
+			margin: 1rem 0;
+		}
+
+		.plane-cell {
+			width: 24px;
+			height: 24px;
+			background-color: #546e7a;
+			border: 1px solid #FFF;
+		}
+
+		.plane-head {
+			background-color: #c2185b;
+		}
+
+		.plane-body {
+			background-color: #1565c0;
+		}
+
+		.flex {
+			display: flex;
+			justify-content: space-evenly;
+		}
+
+		/* 手機版小螢幕時，legend改成直排 */
+		@media (max-width: 600px) {
+			.legend {
+				flex-direction: column;
+				align-items: center;
+			}
+
+			.legend-item {
+				justify-content: center;
+			}
+		}
+	</style>
+</head>
 
 <body>
-	<br />
-	<br />
-	<div class="container">
-		<div class="row center">
-			<canvas id="grid" class="center-align">
+	<div style="font-size: 2rem; text-align: center; margin-top: 2rem; font-weight: bold;">先找出紅色機頭者勝利</div>
+	<div class="flex">
+		<!-- 圖示說明區 -->
+		<div class="legend">
+			<div class="legend-item">
+				<div class="color-box color-head"></div> 機頭
+			</div>
+			<div class="legend-item">
+				<div class="color-box color-obstacle"></div> 機身
+			</div>
+			<div class="legend-item">
+				<div class="color-box color-empty"></div> 空白
+			</div>
+		</div>
+
+		<!-- 正確飛機範例 -->
+		<div class="legend">
+			<div>
+				
+				<div class="plane-sample">
+					<!-- 5x5 飛機格子 -->
+					<div class="plane-cell"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell"></div>
+
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell"></div>
+
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell plane-head"></div>
+					<div class="plane-cell"></div>
+
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell"></div>
+
+					<div class="plane-cell"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell plane-body"></div>
+					<div class="plane-cell"></div>
+					<div class="plane-cell"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 
-	<!--JavaScript at end of body for optimized loading-->
+	<div class="container">
+		<div class="row center">
+			<canvas id="grid" class="center-align"></canvas>
+		</div>
+	</div>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 	<script src="js/main.js"></script>
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
+			const canvas = document.getElementById('grid');
+			resizeCanvas();
 			startGame();
+
+			window.addEventListener('resize', () => {
+				resizeCanvas();
+				startGame();
+			});
+
+			function resizeCanvas() {
+				const screenWidth = window.innerWidth;
+				const maxCanvasWidth = 600;
+				const canvasWidth = Math.min(screenWidth * 0.9, maxCanvasWidth);
+				canvas.width = canvasWidth;
+				canvas.height = canvasWidth;
+			}
 		});
 	</script>
+
 </body>
 
 </html>
